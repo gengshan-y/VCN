@@ -1,0 +1,13 @@
+results/
+weights/
+__pycache__/
+*/__pycache__/
+iter_counts*.txt
+tmp/
+*.lprof
+*.pyc
+models/*.pyc
+*.npy
+.ipynb_checkpoints/*
+.ipynb_checkpoints
+results/*
