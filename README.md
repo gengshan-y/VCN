@@ -85,7 +85,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python main.py --maxdisp 512 --fac 2 --database /ss
 ```
 To fine-tune on Sintel with a batchsize of 16, run
 ```
-CUDA_VISIBLE_DEVICES=0,1,2,3 python main.py --maxdisp 448 --fac 1.4 --database /ssd/ --logname sintel-trainval-0 --savemodel /data/ptmodel/  --epochs 1000 --stage sinteltrainval --ngpus 4 --loadmodel ./weights/things/finetune_211999.tar --retrain true
+CUDA_VISIBLE_DEVICES=0,1,2,3 python main.py --maxdisp 448 --fac 1.4 --database /ssd/ --logname sintel-trainval-0 --savemodel /data/ptmodel/  --epochs 1000 --stage sinteltrainval --ngpus 4 --loadmodel ./weights/things/finetune_239999.tar --retrain true
 ```
 
 #### Note on train-val
