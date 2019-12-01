@@ -122,7 +122,7 @@ Besides, the truncated soft-argmin is implemented with 3D max pooling, which is 
 Thanks [ClementPinard](https://github.com/ClementPinard), [Lyken17](https://github.com/Lyken17), [NVlabs](https://github.com/NVlabs) and many others for open-sourcing their code.
 - Pytorch op counter thop is modified from [pytorch-OpCounter](https://github.com/Lyken17/pytorch-OpCounter)
 - Correlation module is modified from [Pytorch-Correlation-extension](https://github.com/ClementPinard/Pytorch-Correlation-extension)
-- Full 4D convolution is taken from [PracticalDeepStereo_NIPS2018](https://github.com/tlkvstepan/PracticalDeepStereo_NIPS2018), but is not used for our model (only used in Ablation study).
+- Full 4D convolution is taken from [NCNet](https://github.com/ignacio-rocco/ncnet), but is not used for our model (only used in Ablation study).
 
 ## Citation
 ```

@@ -13,7 +13,7 @@ from torch.nn import Conv2d
 def conv4d(data,filters,bias=None,permute_filters=True,use_half=False):
     """
     This is done by stacking results of multiple 3D convolutions, and is very slow.
-    Taken from https://github.com/tlkvstepan/PracticalDeepStereo_NIPS2018
+    Taken from https://github.com/ignacio-rocco/ncnet
     """
     b,c,h,w,d,t=data.size()
 
