@@ -273,7 +273,7 @@ def adjust_learning_rate(optimizer, total_iters):
     if lr_schedule == 'slong_ours':
         if total_iters < 70000:
             lr = baselr
-        elif total_iters < 140000:
+        elif total_iters < 130000:
             lr = baselr/2.
         elif total_iters < 190000:
             lr = baselr/4.
