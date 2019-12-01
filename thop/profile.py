@@ -81,8 +81,11 @@ def profile(model, input_size, custom_ops={}, device="cpu"):
     for m in model.modules():
         if len(list(m.children())) > 0:  # skip for non-leaf module
             #import pdb; pdb.set_trace()
+            #if 'butterfly' in str(m._get_name()): break
             print('-> %s'%(str(m._get_name())))
             continue
+        #if not '2d' in str(m._get_name()): continue
+        #if not '3d' in str(m._get_name()): continue
         print("Registered FLOP counter (%.1f M/%.1f) for module %s" % (m.total_ops/1e6, m.total_params, str(m)))
         total_ops += m.total_ops
         total_params += m.total_params

@@ -11,6 +11,10 @@ from torch.autograd import Variable
 from torch.nn import Conv2d
 
 def conv4d(data,filters,bias=None,permute_filters=True,use_half=False):
+    """
+    This is done by stacking results of multiple 3D convolutions, and is very slow.
+    Taken from https://github.com/tlkvstepan/PracticalDeepStereo_NIPS2018
+    """
     b,c,h,w,d,t=data.size()
 
     data=data.permute(2,0,1,3,4,5).contiguous() # permute to avoid making contiguous inside loop    
@@ -244,49 +248,49 @@ class sepConv4dBlock(torch.nn.Module):
         return out
 
 
-#import torch.backends.cudnn as cudnn
-#cudnn.benchmark = True
-import time
-#im = torch.randn(9,64,9,160,224).cuda()
-#net = torch.nn.Conv3d(64, 64, 3).cuda()
-#net = Conv4d(1,1,3,bias=True,pre_permuted_filters=True).cuda()
-#net = sepConv4dBlock(2,2,stride=(1,1,1)).cuda()
-
-#im = torch.randn(1,16,9,9,96,320).cuda()
-#net = sepConv4d(16,16,with_bn=False).cuda()
-
-#im = torch.randn(1,16,81,96,320).cuda()
-#net = torch.nn.Conv3d(16,16,(1,3,3),padding=(0,1,1)).cuda()
-
-#im = torch.randn(1,16,9,9,96*320).cuda()
-#net = torch.nn.Conv3d(16,16,(3,3,1),padding=(1,1,0)).cuda()
-
-#im = torch.randn(10000,10,9,9).cuda()
-#net = torch.nn.Conv2d(10,10,3,padding=1).cuda()
-
-#im = torch.randn(81,16,96,320).cuda()
-#net = torch.nn.Conv2d(16,16,3,padding=1).cuda()
-c=   int(16 *1)
-cp = int(16 *1)
-h=int(96  *4)
-w=int(320 *4)
-k=3
-im = torch.randn(1,c,h,w).cuda()
-net = torch.nn.Conv2d(c,cp,k,padding=k//2).cuda()
-
-im2 = torch.randn(cp,k*k*c).cuda()
-im1 = F.unfold(im, (k,k), padding=k//2)[0]
- 
-
-net(im)
-net(im)
-torch.mm(im2,im1)
-torch.mm(im2,im1)
-torch.cuda.synchronize()
-beg = time.time()
-for i in range(100):
-    net(im)
-    #im1 = F.unfold(im, (k,k), padding=k//2)[0]
-    torch.mm(im2,im1)
-torch.cuda.synchronize()
-print('%f'%((time.time()-beg)*10.))
+##import torch.backends.cudnn as cudnn
+##cudnn.benchmark = True
+#import time
+##im = torch.randn(9,64,9,160,224).cuda()
+##net = torch.nn.Conv3d(64, 64, 3).cuda()
+##net = Conv4d(1,1,3,bias=True,pre_permuted_filters=True).cuda()
+##net = sepConv4dBlock(2,2,stride=(1,1,1)).cuda()
+#
+##im = torch.randn(1,16,9,9,96,320).cuda()
+##net = sepConv4d(16,16,with_bn=False).cuda()
+#
+##im = torch.randn(1,16,81,96,320).cuda()
+##net = torch.nn.Conv3d(16,16,(1,3,3),padding=(0,1,1)).cuda()
+#
+##im = torch.randn(1,16,9,9,96*320).cuda()
+##net = torch.nn.Conv3d(16,16,(3,3,1),padding=(1,1,0)).cuda()
+#
+##im = torch.randn(10000,10,9,9).cuda()
+##net = torch.nn.Conv2d(10,10,3,padding=1).cuda()
+#
+##im = torch.randn(81,16,96,320).cuda()
+##net = torch.nn.Conv2d(16,16,3,padding=1).cuda()
+#c=   int(16 *1)
+#cp = int(16 *1)
+#h=int(96  *4)
+#w=int(320 *4)
+#k=3
+#im = torch.randn(1,c,h,w).cuda()
+#net = torch.nn.Conv2d(c,cp,k,padding=k//2).cuda()
+#
+#im2 = torch.randn(cp,k*k*c).cuda()
+#im1 = F.unfold(im, (k,k), padding=k//2)[0]
+# 
+#
+#net(im)
+#net(im)
+#torch.mm(im2,im1)
+#torch.mm(im2,im1)
+#torch.cuda.synchronize()
+#beg = time.time()
+#for i in range(100):
+#    net(im)
+#    #im1 = F.unfold(im, (k,k), padding=k//2)[0]
+#    torch.mm(im2,im1)
+#torch.cuda.synchronize()
+#print('%f'%((time.time()-beg)*10.))

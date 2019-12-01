@@ -205,7 +205,7 @@ class PWCDCNet(nn.Module):
     def bias_parameters(self):
         return [param for name, param in self.named_parameters() if 'bias' in name]
 
-
+    #@profile
     def forward(self,im):
         bs = im.shape[0]//2
         c01 = self.conv1b(self.conv1aa(self.conv1a(im)))

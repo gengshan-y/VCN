@@ -5,7 +5,7 @@
 **Requirements**
 - python 3.6
 - pytorch 1.0.0-1.3.0
-- [pytorch correlation module](https://github.com/gengshan-y/Pytorch-Correlation-extension) (optional) This gives a noticible inference time speed up. Please replace self.corr() with self.corrf() in models/VCN.py if pytorch correlation module is not installed.
+- [pytorch correlation module](https://github.com/gengshan-y/Pytorch-Correlation-extension) (optional) This gives around 20ms speed-up on KITTI-sized images. Please replace self.corr() with self.corrf() in models/VCN.py if pytorch correlation module is not installed.
 - [weights files](https://drive.google.com/drive/folders/1mgadg50ti1QdwfAf6aR2v1pCx-ITsYfE?usp=sharing)
 
 ## Pre-trained models
@@ -55,17 +55,6 @@ python eval_tmp.py --path ./weights/$modelname/ --vis no --dataset sintel
 Evaluation error on sintel validation images: Fl-err = 7.9, EPE = 2.351
 
 
-
-## Measure FLOPS
-```
-python flops.py
-```
-gives
-
-PWCNet:     flops(G)/params(M):101.6/9.37
-
-VCN:        flops(G)/params(M):101.7/6.23
-
 ## Train the model
 We follow the same stage-wise training procedure as prior work: Chairs->Things->KITTI or Chairs->Things->Sintel, but uses much lesser iterations.
 If you plan to train the model and reproduce the numbers, please check out our [supplementary material](https://papers.nips.cc/paper/8367-volumetric-correspondence-networks-for-optical-flow) for the differences in hyper-parameters with FlowNet2 and PWCNet.
@@ -75,11 +64,11 @@ Make sure you have downloaded [flying chairs](https://lmb.informatik.uni-freibur
 and [flying things **subset**](https://lmb.informatik.uni-freiburg.de/resources/datasets/SceneFlowDatasets.en.html),
 and placed them under the same folder, say /ssd/.
 
-To first train on flying chairs for 140k iterations, run (assuming you have two gpus)
+To first train on flying chairs for 140k iterations with a batchsize of 8, run (assuming you have two gpus)
 ```
 CUDA_VISIBLE_DEVICES=0,1 python main.py --maxdisp 256 --fac 1 --database /ssd/ --logname chairs-0 --savemodel /data/ptmodel/  --epochs 1000 --stage chairs --ngpus 2
 ```
-Then we want to fine-tune on flying things for 80k iterations, resume from your pre-trained model or use our pretrained model
+Then we want to fine-tune on flying things for 80k iterations with a batchsize of 8, resume from your pre-trained model or use our pretrained model
 ```
 CUDA_VISIBLE_DEVICES=0,1 python main.py --maxdisp 256 --fac 1 --database /ssd/ --logname things-0 --savemodel /data/ptmodel/  --epochs 1000 --stage things --ngpus 2 --loadmodel ./weights/charis/finetune_141999.tar --retrain false
 ```
@@ -90,11 +79,11 @@ Be aware that the program reads/writes to iter_counts-(suffix).txt at training t
 Please first download the kitti 2012/2015 flow dataset if you want to fine-tune on kitti. 
 Download [rob_devkit](http://www.cvlibs.net:3000/ageiger/rob_devkit/src/flow/flow) if you want to fine-tune on sintel.
 
-To fine-tune on KITTI, run
+To fine-tune on KITTI with a batchsize of 16, run
 ```
 CUDA_VISIBLE_DEVICES=0,1,2,3 python main.py --maxdisp 512 --fac 2 --database /ssd/ --logname kitti-trainval-0 --savemodel /data/ptmodel/  --epochs 1000 --stage 2015trainval --ngpus 4 --loadmodel ./weights/things/finetune_211999.tar --retrain true
 ```
-To fine-tune on Sintel, run
+To fine-tune on Sintel with a batchsize of 16, run
 ```
 CUDA_VISIBLE_DEVICES=0,1,2,3 python main.py --maxdisp 448 --fac 1.4 --database /ssd/ --logname sintel-trainval-0 --savemodel /data/ptmodel/  --epochs 1000 --stage sinteltrainval --ngpus 4 --loadmodel ./weights/things/finetune_211999.tar --retrain true
 ```
@@ -107,10 +96,33 @@ above procedure.
 - The numbers in Tab.3 of the paper is on the whole train-val set (all the data with ground-truth).
 - You might find run.sh helpful to run evaluation on KITTI/Sintel.
 
+## Measure FLOPS
+```
+python flops.py
+```
+gives
+
+PWCNet:     flops(G)/params(M):101.6/9.37
+
+VCN:        flops(G)/params(M):101.7/6.23
+
+#### Note on inference time
+The current implementation runs at 180ms/pair on KITTI-sized images at inference time.
+A rough breakdown of running time is: feature extraction - 4.9%, feature correlation - 8.7%, separable 4D convolutions - 56%, trun. soft-argmin (soft winner-take-all) - 20% and hypotheses fusion - 9.5%.
+A detailed breakdown is shown below in the form "name-level percentage".
+
+<img src="figs/time-breakdown.png" width=500>
+
+Note that separable 4D convolutions use less FLOPS than 2D convolutions (i.e., feature extraction module + hypotheses fusion module, 47.8 v.s. 53.3 Gflops)
+but take 4X more time (56% v.s. 14.4%). One reason might be that pytorch (also other packages) is more friendly to networks with more feature channels than those with large spatial size given the same Flops. This might be fixed at the conv kernel / hardware level.
+
+Besides, the truncated soft-argmin is implemented with 3D max pooling, which is inefficient and takes more time than expected.
+
 ## Acknowledgement
 Thanks [ClementPinard](https://github.com/ClementPinard), [Lyken17](https://github.com/Lyken17), [NVlabs](https://github.com/NVlabs) and many others for open-sourcing their code.
 - Pytorch op counter thop is modified from [pytorch-OpCounter](https://github.com/Lyken17/pytorch-OpCounter)
 - Correlation module is modified from [Pytorch-Correlation-extension](https://github.com/ClementPinard/Pytorch-Correlation-extension)
+- Full 4D convolution is taken from [PracticalDeepStereo_NIPS2018](https://github.com/tlkvstepan/PracticalDeepStereo_NIPS2018), but is not used for our model (only used in Ablation study).
 
 ## Citation
 ```
