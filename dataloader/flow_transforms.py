@@ -208,7 +208,7 @@ class SpatialAug(object):
             mask_0 = F.grid_sample(torch.Tensor(mask_0).permute(2,0,1)[np.newaxis],    vgrid[np.newaxis], mode='nearest')[0].permute(1,2,0)
         else:
             mask_0 = F.grid_sample(torch.Tensor(mask_0).permute(2,0,1)[np.newaxis],    vgrid[np.newaxis])[0].permute(1,2,0)
-        mask_0[np.isnan(mask_0).bool()] = 0
+        mask_0[torch.isnan(mask_0)] = 0
 
 
         vgrid = self.grid_transform(meshgrid, transmat1,gridsize=[float(h),float(w)])

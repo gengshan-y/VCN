@@ -30,6 +30,10 @@ parser.add_argument('--outdir', default='output',
                     help='output path')
 parser.add_argument('--testres', type=float, default=1,
                     help='resolution, {1: original resolution, 2: 2X resolution}')
+parser.add_argument('--maxdisp', type=int ,default=256,
+                    help='maxium disparity. Only affect the coarsest cost volume size')
+parser.add_argument('--fac', type=float ,default=1,
+                    help='controls the shape of search grid. Only affect the coarse cost volume size')
 args = parser.parse_args()
 
 
@@ -102,12 +106,13 @@ if args.dataset == 'chairs':
 
 
 from models.VCN import VCN
-if '2015' in args.dataset:
-    model = VCN([1, maxw, maxh], md=[8,4,4,4,4], fac=2)
-elif 'sintel' in args.dataset:
-    model = VCN([1, maxw, maxh], md=[7,4,4,4,4], fac=1.4)
-else:
-    model = VCN([1, maxw, maxh], md=[4,4,4,4,4], fac=1)
+#if '2015' in args.dataset:
+#    model = VCN([1, maxw, maxh], md=[8,4,4,4,4], fac=2)
+#elif 'sintel' in args.dataset:
+#    model = VCN([1, maxw, maxh], md=[7,4,4,4,4], fac=1.4)
+#else:
+#    model = VCN([1, maxw, maxh], md=[4,4,4,4,4], fac=1)
+model = VCN([1, maxw, maxh], md=[int(4*(args.maxdisp//256)),4,4,4,4], fac=args.fac)
     
 model = nn.DataParallel(model, device_ids=[0])
 model.cuda()

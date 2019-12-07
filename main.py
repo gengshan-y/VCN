@@ -22,14 +22,15 @@ from models import *
 from utils import logger
 torch.backends.cudnn.benchmark=True
 from models.VCN  import VCN 
+#from models.VCN_small  import VCN 
 from utils.multiscaleloss import realEPE
 
 
 parser = argparse.ArgumentParser(description='PSMNet')
 parser.add_argument('--maxdisp', type=int ,default=256,
-                    help='maxium disparity, out of range pixels will be masked out')
+                    help='maxium disparity, out of range pixels will be masked out. Only affect the coarsest cost volume size')
 parser.add_argument('--fac', type=float ,default=1,
-                    help='controls the shape of search grid.')
+                    help='controls the shape of search grid. Only affect the coarsest cost volume size')
 parser.add_argument('--logname', default='logname',
                     help='name of the log file')
 parser.add_argument('--database', default='/',

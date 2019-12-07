@@ -4,7 +4,7 @@
 
 **Requirements**
 - python 3.6
-- pytorch 1.0.0-1.3.0
+- pytorch 1.1.0-1.3.0
 - [pytorch correlation module](https://github.com/gengshan-y/Pytorch-Correlation-extension) (optional) This gives around 20ms speed-up on KITTI-sized images. Please replace self.corr() with self.corrf() in models/VCN.py if pytorch correlation module is not installed.
 - [weights files](https://drive.google.com/drive/folders/1mgadg50ti1QdwfAf6aR2v1pCx-ITsYfE?usp=sharing)
 
@@ -17,7 +17,7 @@ To run + visualize on KITTI-15 test set,
 ```
 modelname=kitti-ft-trainval
 i=149999
-CUDA_VISIBLE_DEVICES=0 python submission.py --dataset 2015test --datapath dataset/kitti_scene/testing/   --outdir ./weights/$modelname/ --loadmodel ./weights/$modelname/finetune_$i.tar  --testres 1
+CUDA_VISIBLE_DEVICES=0 python submission.py --dataset 2015test --datapath dataset/kitti_scene/testing/   --outdir ./weights/$modelname/ --loadmodel ./weights/$modelname/finetune_$i.tar  --maxdisp 512 --fac 2
 ```
 then running point-vec.ipynb will give you flow visualizations with color and vectors as follows.
 
@@ -31,7 +31,7 @@ To evaluate on the 40 validation images of KITTI-15 (0,5,...195), (also assuming
 ```
 modelname=kitti-ft-trainval
 i=149999
-CUDA_VISIBLE_DEVICES=0 python submission.py --dataset 2015 --datapath /ssd/kitti_scene/training/   --outdir ./weights/$modelname/ --loadmodel ./weights/$modelname/finetune_$i.tar  --testres 1
+CUDA_VISIBLE_DEVICES=0 python submission.py --dataset 2015 --datapath /ssd/kitti_scene/training/   --outdir ./weights/$modelname/ --loadmodel ./weights/$modelname/finetune_$i.tar  --maxdisp 512 --fac 2
 python eval_tmp.py --path ./weights/$modelname/ --vis no --dataset 2015
 ```
 
@@ -49,7 +49,7 @@ To evaluate on Sintel validation set,
 ```
 modelname=sintel-ft-trainval
 i=67999
-CUDA_VISIBLE_DEVICES=0 python submission.py --dataset sintel --datapath /ssd/rob_flow/training/   --outdir ./weights/$modelname/ --loadmodel ./weights/$modelname/finetune_$i.tar  --testres 1
+CUDA_VISIBLE_DEVICES=0 python submission.py --dataset sintel --datapath /ssd/rob_flow/training/   --outdir ./weights/$modelname/ --loadmodel ./weights/$modelname/finetune_$i.tar  --maxdisp 448 --fac 1.4
 python eval_tmp.py --path ./weights/$modelname/ --vis no --dataset sintel
 ```
 Evaluation error on sintel validation images: Fl-err = 7.9, EPE = 2.351
