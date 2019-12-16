@@ -112,7 +112,7 @@ from models.VCN import VCN
 #    model = VCN([1, maxw, maxh], md=[7,4,4,4,4], fac=1.4)
 #else:
 #    model = VCN([1, maxw, maxh], md=[4,4,4,4,4], fac=1)
-model = VCN([1, maxw, maxh], md=[int(4*(args.maxdisp//256)),4,4,4,4], fac=args.fac)
+model = VCN([1, maxw, maxh], md=[int(4*(args.maxdisp/256)),4,4,4,4], fac=args.fac)
     
 model = nn.DataParallel(model, device_ids=[0])
 model.cuda()
