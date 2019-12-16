@@ -198,7 +198,7 @@ else:
 print('%d batches per epoch'%(len(data_inuse)//batch_size))
 
 #TODO
-model = VCN([batch_size//ngpus]+data_inuse.datasets[0].shape[::-1], md=[int(4*(args.maxdisp//256)), 4,4,4,4], fac=args.fac)
+model = VCN([batch_size//ngpus]+data_inuse.datasets[0].shape[::-1], md=[int(4*(args.maxdisp/256)), 4,4,4,4], fac=args.fac)
 model = nn.DataParallel(model)
 model.cuda()
 
