@@ -58,7 +58,10 @@ class flow_reg(nn.Module):
             x = x.view(b,u*v,h,w)
 
             idx = x.argmax(1)[:,np.newaxis]
-            mask = Variable(torch.cuda.HalfTensor(b,u*v,h,w)).fill_(0)
+            if x.is_cuda:
+                mask = Variable(torch.cuda.HalfTensor(b,u*v,h,w)).fill_(0)
+            else:
+                mask = Variable(torch.FloatTensor(b,u*v,h,w)).fill_(0)
             mask.scatter_(1,idx,1)
             mask = mask.view(b,1,u,v,-1)
             mask = self.pool3d(mask)[:,0].view(b,u,v,h,w)
@@ -350,7 +353,7 @@ class VCN(nn.Module):
         c22n = c22 / (c22.norm(dim=1, keepdim=True)+1e-9)
 
         ## matching 6
-        if self.training:
+        if self.training or (not im.is_cuda):
             feat6 = self.corrf(c16n,c26n,self.md[0],fac=self.fac)
         else:
             feat6 = self.corr(c16n,c26n,self.md[0],fac=self.fac)
@@ -378,7 +381,7 @@ class VCN(nn.Module):
         ## matching 5
         up_flow6 = F.upsample(flow6, [im.size()[2]//32,im.size()[3]//32], mode='bilinear')*2
         warp5,_ = self.warp5(c25n, up_flow6)
-        if self.training:
+        if self.training or (not im.is_cuda):
             feat5 = self.corrf(c15n,warp5,self.md[1])
         else:
             feat5 = self.corr(c15n,warp5,self.md[1])
@@ -412,7 +415,7 @@ class VCN(nn.Module):
         ## matching 4
         up_flow5 = F.upsample(flow5, [im.size()[2]//16,im.size()[3]//16], mode='bilinear')*2
         warp4,_ = self.warp4(c24n, up_flow5)
-        if self.training:
+        if self.training or (not im.is_cuda):
             feat4 = self.corrf(c14n,warp4,self.md[2])
         else:
             feat4 = self.corr(c14n,warp4,self.md[2])
@@ -446,7 +449,7 @@ class VCN(nn.Module):
         ## matching 3
         up_flow4 = F.upsample(flow4, [im.size()[2]//8,im.size()[3]//8], mode='bilinear')*2
         warp3,_ = self.warp3(c23n, up_flow4)
-        if self.training:
+        if self.training or (not im.is_cuda):
             feat3 = self.corrf(c13n,warp3,self.md[3])
         else:
             feat3 = self.corr(c13n,warp3,self.md[3])
@@ -479,7 +482,7 @@ class VCN(nn.Module):
         ## matching 2
         up_flow3 = F.upsample(flow3, [im.size()[2]//4,im.size()[3]//4], mode='bilinear')*2
         warp2,_ = self.warp2(c22n, up_flow3)
-        if self.training:
+        if self.training or (not im.is_cuda):
             feat2 = self.corrf(c12n,warp2,self.md[4])
         else:
             feat2 = self.corr(c12n,warp2,self.md[4])

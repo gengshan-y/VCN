@@ -102,9 +102,9 @@ python flops.py
 ```
 gives
 
-PWCNet:     flops(G)/params(M):101.6/9.37
+PWCNet:     flops(G)/params(M):90.8/9.37
 
-VCN:        flops(G)/params(M):101.7/6.23
+VCN:        flops(G)/params(M):96.5/6.23
 
 #### Note on inference time
 The current implementation runs at 180ms/pair on KITTI-sized images at inference time.

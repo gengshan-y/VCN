@@ -509,4 +509,4 @@ class VCN(nn.Module):
 
             return flow2*4, flow3*8,flow4*16,flow5*32,flow6*64,loss, oor3
         else:
-            return flow2*4, ent2h.mean(1)[0]
+            return flow2*4, ent3h.mean(1)[0]
