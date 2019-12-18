@@ -9,6 +9,14 @@
 - [weights files](https://drive.google.com/drive/folders/1mgadg50ti1QdwfAf6aR2v1pCx-ITsYfE?usp=sharing)
 
 ## Pre-trained models
+#### To test on any two images
+Run point-vec.ipynb. It will give you following flow visualizations with color and vectors.
+
+<img src="figs/kitti-test-42.png" width="300">
+<img src="figs/kitti-test-42-vec.png" width="300">
+<img src="figs/hawk.png" width="300">
+<img src="figs/hawk-vec.png" width="300">
+
 #### KITTI
 **This correspondens to the entry on the [leaderboard](http://www.cvlibs.net/datasets/kitti/eval_scene_flow.php?benchmark=flow) (Fl-all=6.30%).**
 ##### Try on a single image
@@ -19,10 +27,6 @@ modelname=kitti-ft-trainval
 i=149999
 CUDA_VISIBLE_DEVICES=0 python submission.py --dataset 2015test --datapath dataset/kitti_scene/testing/   --outdir ./weights/$modelname/ --loadmodel ./weights/$modelname/finetune_$i.tar  --maxdisp 512 --fac 2
 ```
-then running point-vec.ipynb will give you flow visualizations with color and vectors as follows.
-
-<img src="figs/kitti-test-42.png" width="300">
-<img src="figs/kitti-test-42-vec.png" width="300">
 
 ##### Evaluate on KITTI-val
 *To see the details of the train-val split, please scroll down to "note on train-val" and run dataloader/kitti15list_val.py, dataloader/kitti15list_train.py, dataloader/sitnellist_train.py, and dataloader/sintellist_val.py.*
