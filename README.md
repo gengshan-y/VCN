@@ -10,7 +10,7 @@
 
 ## Pre-trained models
 #### To test on any two images
-Run point-vec.ipynb. It will give you following flow visualizations with color and vectors.
+Running point-vec.ipynb. gives you the following flow visualizations with color and vectors.
 
 <img src="figs/kitti-test-42.png" width="300">
 <img src="figs/kitti-test-42-vec.png" width="300">
@@ -19,13 +19,14 @@ Run point-vec.ipynb. It will give you following flow visualizations with color a
 
 #### KITTI
 **This correspondens to the entry on the [leaderboard](http://www.cvlibs.net/datasets/kitti/eval_scene_flow.php?benchmark=flow) (Fl-all=6.30%).**
-##### Try on a single image
+##### Evaluate on KITTI-15 benchmark
 
 To run + visualize on KITTI-15 test set,
 ```
 modelname=kitti-ft-trainval
 i=149999
 CUDA_VISIBLE_DEVICES=0 python submission.py --dataset 2015test --datapath dataset/kitti_scene/testing/   --outdir ./weights/$modelname/ --loadmodel ./weights/$modelname/finetune_$i.tar  --maxdisp 512 --fac 2
+python eval_tmp.py --path ./weights/$modelname/ --vis yes --dataset 2015test
 ```
 
 ##### Evaluate on KITTI-val
