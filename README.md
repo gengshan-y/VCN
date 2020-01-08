@@ -10,7 +10,7 @@
 
 ## Pre-trained models
 #### To test on any two images
-Running point-vec.ipynb. gives you the following flow visualizations with color and vectors.
+Running [visualize.ipynb](./visualize.ipynb) gives you the following flow visualizations with color and vectors. Note: the sintel model "./weights/sintel-ft-trainval/finetune_67999.tar" is trained on multiple datasets and generalizes better than the KITTI model.
 
 <img src="figs/kitti-test-42.png" width="300">
 <img src="figs/kitti-test-42-vec.png" width="300">
