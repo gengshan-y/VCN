@@ -21,8 +21,6 @@ from utils.flowlib import flow_to_image
 from models import *
 from utils import logger
 torch.backends.cudnn.benchmark=True
-from models.VCN  import VCN 
-#from models.VCN_small  import VCN 
 from utils.multiscaleloss import realEPE
 
 
@@ -39,6 +37,8 @@ parser.add_argument('--epochs', type=int, default=300,
                     help='number of epochs to train')
 parser.add_argument('--loadmodel', default=None,
                     help='path of the pre-trained model')
+parser.add_argument('--model', default='VCN',
+                    help='VCN or VCN_small')
 parser.add_argument('--savemodel', default='./',
                     help='path to save the model')
 parser.add_argument('--retrain', default='false',
@@ -48,6 +48,11 @@ parser.add_argument('--stage', default='chairs',
 parser.add_argument('--ngpus', type=int, default=2,
                     help='number of gpus to use.')
 args = parser.parse_args()
+
+if args.model == 'VCN':
+    from models.VCN import VCN
+elif args.model == 'VCN_small':
+    from models.VCN_small import VCN
 
 # fix random seed
 torch.manual_seed(1)

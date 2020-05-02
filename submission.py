@@ -28,6 +28,8 @@ parser.add_argument('--loadmodel', default=None,
                     help='model path')
 parser.add_argument('--outdir', default='output',
                     help='output path')
+parser.add_argument('--model', default='VCN',
+                    help='VCN or VCN_small')
 parser.add_argument('--testres', type=float, default=1,
                     help='resolution, {1: original resolution, 2: 2X resolution}')
 parser.add_argument('--maxdisp', type=int ,default=256,
@@ -104,8 +106,10 @@ if args.dataset == 'chairs':
     test_left_img = [test_left_img[i] for i,flag in enumerate(split)     if flag==2]
     test_right_img = [test_right_img[i] for i,flag in enumerate(split)     if flag==2]
 
-
-from models.VCN import VCN
+if args.model == 'VCN':
+    from models.VCN import VCN
+elif args.model == 'VCN_small':
+    from models.VCN_small import VCN
 #if '2015' in args.dataset:
 #    model = VCN([1, maxw, maxh], md=[8,4,4,4,4], fac=2)
 #elif 'sintel' in args.dataset:
