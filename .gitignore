@@ -3,7 +3,9 @@ vcn-time
 vcn-time2
 profile.py
 results/
+weights
 weights/
+weights_small/
 __pycache__/
 */__pycache__/
 iter_counts*.txt
