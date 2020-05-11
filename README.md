@@ -6,7 +6,7 @@
 - python 3.6
 - pytorch 1.1.0-1.3.0
 - [pytorch correlation module](https://github.com/gengshan-y/Pytorch-Correlation-extension) (optional) This gives around 20ms speed-up on KITTI-sized images. Please replace self.corr() with self.corrf() in models/VCN.py if pytorch correlation module is not installed.
-- [weights files (VCN)](https://drive.google.com/drive/folders/1mgadg50ti1QdwfAf6aR2v1pCx-ITsYfE?usp=sharing)
+- [weights files (VCN)](https://drive.google.com/drive/folders/1mgadg50ti1QdwfAf6aR2v1pCx-ITsYfE?usp=sharing) Note: You can load them without untarring the files, see [pytorch saving and loading models](https://pytorch.org/tutorials/beginner/saving_loading_models.html).
 - [weights files (VCN-small)](https://drive.google.com/drive/folders/16WvCL1Y5IkCoNmEEEbF_qmZPToMhw9VZ?usp=sharing)
 
 ## Pre-trained models
