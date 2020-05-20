@@ -356,7 +356,8 @@ class VCN(nn.Module):
         if self.training or (not im.is_cuda):
             feat6 = self.corrf(c16n,c26n,self.md[0],fac=self.fac)
         else:
-            feat6 = self.corr(c16n,c26n,self.md[0],fac=self.fac)
+            feat6 = self.corrf(c16n,c26n,self.md[0],fac=self.fac)
+            #feat6 = self.corr(c16n,c26n,self.md[0],fac=self.fac)
         feat6 = self.f6(feat6) 
         cost6 = self.p6(feat6) # b, 16, u,v,h,w
 
@@ -384,7 +385,8 @@ class VCN(nn.Module):
         if self.training or (not im.is_cuda):
             feat5 = self.corrf(c15n,warp5,self.md[1])
         else:
-            feat5 = self.corr(c15n,warp5,self.md[1])
+            feat5 = self.corrf(c15n,warp5,self.md[1])
+            #feat5 = self.corr(c15n,warp5,self.md[1])
         feat5 = self.f5(feat5) 
         cost5 = self.p5(feat5) # b, 16, u,v,h,w
 
@@ -418,7 +420,8 @@ class VCN(nn.Module):
         if self.training or (not im.is_cuda):
             feat4 = self.corrf(c14n,warp4,self.md[2])
         else:
-            feat4 = self.corr(c14n,warp4,self.md[2])
+            feat4 = self.corrf(c14n,warp4,self.md[2])
+            #feat4 = self.corr(c14n,warp4,self.md[2])
         feat4 = self.f4(feat4) 
         cost4 = self.p4(feat4) # b, 16, u,v,h,w
 
@@ -452,7 +455,8 @@ class VCN(nn.Module):
         if self.training or (not im.is_cuda):
             feat3 = self.corrf(c13n,warp3,self.md[3])
         else:
-            feat3 = self.corr(c13n,warp3,self.md[3])
+            feat3 = self.corrf(c13n,warp3,self.md[3])
+            #feat3 = self.corr(c13n,warp3,self.md[3])
         feat3 = self.f3(feat3) 
         cost3 = self.p3(feat3) # b, 16, u,v,h,w
 
@@ -485,7 +489,8 @@ class VCN(nn.Module):
         if self.training or (not im.is_cuda):
             feat2 = self.corrf(c12n,warp2,self.md[4])
         else:
-            feat2 = self.corr(c12n,warp2,self.md[4])
+            feat2 = self.corrf(c12n,warp2,self.md[4])
+            #feat2 = self.corr(c12n,warp2,self.md[4])
         feat2 = self.f2(feat2) 
         cost2 = self.p2(feat2) # b, 16, u,v,h,w
 
