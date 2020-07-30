@@ -208,10 +208,10 @@ class sepConv4d(torch.nn.Module):
     #@profile
     def forward(self,x):
         b,c,u,v,h,w = x.shape
-        x = self.conv2(x.view(b,c,u,v,-1))
+        x = self.conv2(x.view(b,c,u,v,-1)) # WTA convolution over (u,v)
         b,c,u,v,_ = x.shape
         x = self.relu(x)
-        x = self.conv1(x.view(b,c,-1,h,w))
+        x = self.conv1(x.view(b,c,-1,h,w)) # spatial convolution over (x,y)
         b,c,_,h,w = x.shape
 
         if self.isproj:

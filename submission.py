@@ -168,6 +168,24 @@ def main():
         imgL = np.transpose(imgL, [2,0,1])[np.newaxis]
         imgR = np.transpose(imgR, [2,0,1])[np.newaxis]
 
+        # support for any resolution inputs
+        from models.VCN import WarpModule, flow_reg
+        if hasattr(model.module, 'flow_reg64'):
+            model.module.flow_reg64 = flow_reg([1,max_w//64,max_h//64], ent=model.module.flow_reg64.ent, maxdisp=model.module.flow_reg64.md, fac=model.module.flow_reg64.fac).cuda()
+        if hasattr(model.module, 'flow_reg32'):
+            model.module.flow_reg32 = flow_reg([1,max_w//64*2,max_h//64*2], ent=model.module.flow_reg32.ent, maxdisp=model.module.flow_reg32.md, fac=model.module.flow_reg32.fac).cuda()
+        if hasattr(model.module, 'flow_reg16'):
+            model.module.flow_reg16 = flow_reg([1,max_w//64*4,max_h//64*4], ent=model.module.flow_reg16.ent, maxdisp=model.module.flow_reg16.md, fac=model.module.flow_reg16.fac).cuda()
+        if hasattr(model.module, 'flow_reg8'):
+            model.module.flow_reg8 =  flow_reg([1,max_w//64*8, max_h//64*8], ent=model.module.flow_reg8.ent,  maxdisp=model.module.flow_reg8.md , fac = model.module.flow_reg8.fac).cuda()
+        if hasattr(model.module, 'flow_reg4'):
+            model.module.flow_reg4 =  flow_reg([1,max_w//64*16, max_h//64*16 ], ent=model.module.flow_reg4.ent,  maxdisp=model.module.flow_reg4.md , fac = model.module.flow_reg4.fac).cuda()
+        model.module.warp5 = WarpModule([1,max_w//32,max_h//32]).cuda()
+        model.module.warp4 = WarpModule([1,max_w//16,max_h//16]).cuda()
+        model.module.warp3 = WarpModule([1,max_w//8, max_h//8]).cuda()
+        model.module.warp2 = WarpModule([1,max_w//4, max_h//4]).cuda()
+        model.module.warpx = WarpModule([1,max_w, max_h]).cuda()
+
         # forward
         imgL = Variable(torch.FloatTensor(imgL).cuda())
         imgR = Variable(torch.FloatTensor(imgR).cuda())
