@@ -1,0 +1,196 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- Style from https://people.eecs.berkeley.edu/~janner/o2p2/ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+  <script src="./files/head.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Volumetric Correspondence Networks for Optical Flow</title>
+  <link rel="stylesheet" href="./files/font.css">
+  <link rel="stylesheet" href="./files/main.css">
+
+  <style type="text/css">
+    .content {
+      width: 800px;
+      margin: 25px auto;
+      border-radius: 20px;
+    }
+
+    .description {
+      font-family: "Times";
+      white-space: pre;
+      text-align: left;
+    }
+
+    /**
+ * Style sheet used by new LibX tooltip code
+ */
+
+    /* We insert a <div> with libx-tooltip style under the body.
+ * This will inherit body's style - we can't afford to inherit undesirable 
+ * styles and we must redefine what we need.  OTOH, some things, e.g.
+ * font-size, might be ok to be inherited to stay within the page's tone.
+ */
+    .libx-tooltip {
+      display: none;
+      overflow: visible;
+      padding: 5px;
+      z-index: 100;
+      background-color: #eee;
+      color: #000;
+      font-weight: normal;
+      font-style: normal;
+      text-align: left;
+      border: 2px solid #666;
+      border-radius: 5px;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+    }
+
+    .libx-tooltip p {
+      /* override default 1em margin to keep paragraphs inside a tooltip closer together. */
+      margin: .2em;
+    }
+  </style>
+  <style type="text/css">
+    /**
+ * Style sheet used by LibX autolinking code
+ */
+    .libx-autolink {}
+  </style>
+</head>
+
+<body>
+
+  <div class="outercontainer">
+    <div class="container">
+
+      <div class="content project_title" , style="text-align: center">
+        <h1>Volumetric Correspondence Networks for Optical Flow</h1>
+        <big style="color:grey;">
+          NeurIPS 2019
+        </big>
+        <p id="authors">
+        <table align="center" style="width:50%; text-align:center; table-layout: fixed">
+          <tr>
+            <th><a href="https://gengshan-y.github.io/">Gengshan Yang<sup>1</sup></a></th>
+            <th><a href="http://www.cs.cmu.edu/~deva/">Deva Ramanan<sup>1,2</sup></a></th>
+          </tr>
+        </table>
+        <sup>1</sup>Robotics Institute, Carnegie Mellon University<br>
+        <sup>2</sup>Argo AI
+        </p>
+      </div>
+
+      <div class="content">
+
+        <div class="content">
+          <div class="text">
+            <h3>Abstract</h3>
+            <p>Many classic tasks in vision -- such as the estimation of optical flow or stereo disparities -- can be
+              cast as dense correspondence matching. Well-known techniques for doing so make use of a cost volume,
+              typically a 4D tensor of match costs between all pixels in a 2D image and their potential matches in a 2D
+              search window. State-of-the-art (SOTA) deep networks for flow/stereo make use of such volumetric
+              representations as internal layers. However, such layers require significant amounts of memory and
+              compute, making them cumbersome to use in practice. As a result, SOTA networks also employ various
+              heuristics designed to limit volumetric processing, leading to limited accuracy and overfitting. Instead,
+              we introduce several simple modifications that dramatically simplify the use of volumetric layers - (1)
+              volumetric encoder-decoder architectures that efficiently capture large receptive fields, (2)
+              multi-channel cost volumes that capture multi-dimensional notions of pixel similarities, and finally, (3)
+              separable volumetric filtering that significantly reduces computation and parameters while preserving
+              accuracy. Our innovations dramatically improve accuracy over SOTA on standard benchmarks while being
+              significantly easier to work with - training converges in 7X fewer iterations, and most importantly, our
+              networks generalize across correspondence tasks. On-the-fly adaptation of search windows allows us to
+              repurpose optical flow networks for stereo (and vice versa), and can also be used to implement adaptive
+              networks that increase search window sizes on-demand.</p>
+          </div>
+          <div id="teaser" style="margin: 12px; text-align: left;">
+            <a
+              href="http://papers.neurips.cc/paper/8367-volumetric-correspondence-networks-for-optical-flow">[Paper]</a>
+            <a href="https://github.com/gengshan-y/vcn">[Code]</a>
+            <a
+              href="https://docs.google.com/presentation/d/1XKNFx7b4HQzauuU1bYi_9ZQmcQ0eknjSgljRa_kFaXQ/edit?usp=sharing">[Slides]</a>
+            <a href="./vcn-poster.pdf">[Poster]</a>
+            <a href="./neurips19flow.bib">[Bibtex]</a>
+          </div>
+        </div>
+
+
+
+
+        <div class="content">
+          <!--           <div class="text">
+            <h3>Spotlight Video</h3>
+          </div> -->
+          <br>
+          <div class="project_headline">
+            <p>Sintel-clean-ambush-3 (test):</p>
+            <iframe width="1000" height="344" src="./vec-sintel-bf-clean-ambush-3-ours.gif" frameborder="0"
+              allowfullscreen></iframe>
+            <p>Click <a
+                href="https://drive.google.com/file/d/1jdJZsKiMhm1OBxKyQuARpI1haXzXAdp8/view?usp=sharing">here</a> for
+              the high-res video.</p>
+            <!--  <p>If you cannot access YouTube, please <a href="./">download our video here</a>.</p>-->
+          </div>
+          <div class="project_headline">
+            <p>KITTI-140 (test):</p>
+            <iframe width="1000" height="244" src="./vec-kitti-ref-140-ours.gif" frameborder="0"
+              allowfullscreen></iframe>
+            <p>Click <a
+                href="https://drive.google.com/file/d/15opM3dggSkY6WtcQBkTkiDiFa0WBGZ1V/view?usp=sharing">here</a> for
+              the high-res video.</p>
+            <!--  <p>If you cannot access YouTube, please <a href="./">download our video here</a>.</p>-->
+          </div>
+          <div class="project_headline">
+            <p>TUM-plant (test):</p>
+            <iframe width="1000" height="600" src="./vec-tum-ref-plant-small-cut.gif" frameborder="0"
+              allowfullscreen></iframe>
+            <p>Click <a
+                href="https://drive.google.com/file/d/1iqZilHUQmbJ-5DgYK4x3lZcB2Sg7I0_n/view?usp=sharing">here</a> for
+              the high-res video.</p>
+            <!--  <p>If you cannot access YouTube, please <a href="./">download our video here</a>.</p>-->
+          </div>
+        </div>
+
+        <!-- 
+        <div class="content">
+          <div class="text">
+            <h3>Code</h3>
+            <ul class="download">
+              <li><a href="./cvpr19stereo.html">Coming soon</a></li>
+            </ul>
+          </div>
+        </div>
+ -->
+      </div>
+    </div>
+
+    <div class="content">
+      <h2>Bibtex</h2>
+      <p class="description">
+        @inproceedings{yang2019volumetric,
+        title={Volumetric Correspondence Networks for Optical Flow},
+        author={Yang, Gengshan and Ramanan, Deva},
+        booktitle={Advances in Neural Information Processing Systems},
+        pages={793--803},
+        year={2019}
+        }
+
+    </div>
+
+    <div class="content">
+      <h2>Acknowledgments</h2>
+      <p>This work was supported by the <a href="https://labs.ri.cmu.edu/argo-ai-center/">CMU Argo AI Center for
+          Autonomous Vehicle Research</a>.</p>
+    </div>
+    <br><br><br><br>
+
+
+  </div>
+</body>
+
+</html>
